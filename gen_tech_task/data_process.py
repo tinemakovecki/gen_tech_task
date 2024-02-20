@@ -6,7 +6,7 @@ from resdk.tables import RNATables
 
 
 def exp_from_collection(collection: Collection) -> RNATables:
-    """Create and inspect RNA table from collection."""
+    """Extract gene expression data from a collection."""
 
     tables = RNATables(collection)
 
