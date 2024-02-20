@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=64.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gen_tech_task"
+version = "0.1"
+description = "Package for loading gene expressions and calculating metrics (ie. progeny) - for Genialis tech task"
+readme = "README.md"
+requires-python = ">=3.8, <3.13"
+license = { file = "LICENSE" }
+authors = [
+    {name = "Tine Makovecki", email = "tine.makovecki@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pandas",
+    "resdk",
+    "click",
+    "decoupler",
+    "omnipath"
+]
+
+[project.scripts]
+progeny = "gen_tech_task.cli:progeny"
+
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "mypy",
+    "pre-commit",
+    "pylint>=2.14.0",
+    "pytest>=3.0.0",
+    "pytest-cov",
+    "twine",
+]
+
+[tool.black]
+line-length = 120
+preview = true
