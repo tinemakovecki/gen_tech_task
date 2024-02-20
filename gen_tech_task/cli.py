@@ -8,11 +8,20 @@ def format_hline(length: int, border="") -> str:
     return border + ("_" * length) + border
 
 
+def lookup_err_msg(used_login: bool) -> None:
+    """Show neat lookup error message to user."""
+
+    click.echo("Lookup Error: No collection with given name was found.")
+    if not used_login:
+        click.echo("You used guest access. More collections are avaliable with credentials.")
+        click.echo("Use '--login True' flag to login to server.")
+
+
 def show_scores(scores: DataFrame) -> None:
     """Format and output scores to terminal."""
 
     n_cols = len(scores.columns)
-    row_length = 11*n_cols - 1
+    row_length = 11 * n_cols - 1
     horizontal_line = format_hline(row_length, border=" ")
 
     click.echo(horizontal_line)
@@ -30,7 +39,7 @@ def show_scores(scores: DataFrame) -> None:
         for val in row:
             short_val = f"{val:.6f}"
             click.echo("|" + f"{short_val:<10}", nl=False)
-        click.echo("|") 
+        click.echo("|")
 
     click.echo(horizontal_line)
 
@@ -42,12 +51,17 @@ def cli():
 
 @cli.command()
 @click.argument("file")
-def progeny(file: str) -> None:
-    """Fetch gene expressions and return progeny scores."""
+@click.option("-l", "--login", type=click.BOOL, default=False)
+def progeny(file: str, login: bool) -> None:
+    """Fetch gene expressions, calculate and show progeny scores."""
 
-    gene_expressions = get_gene_expressions(file)
-    prog_scores = calculate_progeny(gene_expressions)
-    show_scores(prog_scores)
+    try:
+        gene_expressions = get_gene_expressions(file, use_login=login)
+        prog_scores = calculate_progeny(gene_expressions)
+        show_scores(prog_scores)
+
+    except LookupError as err:
+        lookup_err_msg(used_login=login)
 
 
 if __name__ == "__main__":
